@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <limits.h>
+
+int min_steps(int x, int y) {
+    if (x == y) return 0;
+
+    int dp[y + 1];
+    dp[x] = 0;
+
+    for (int i = x + 1; i <= y; i++) {
+        dp[i] = INT_MAX;
+
+        if (i - 1 >= x && dp[i - 1] != INT_MAX) {
+            dp[i] = dp[i - 1] + 1;
+        }
+        if (i % 2 == 0 && i / 2 >= x && dp[i / 2] != INT_MAX) {
+            dp[i] = (dp[i] < dp[i / 2] + 1) ? dp[i] : dp[i / 2] + 1;
+        }
+        if (i % 3 == 0 && i / 3 >= x && dp[i / 3] != INT_MAX) {
+            dp[i] = (dp[i] < dp[i / 3] + 1) ? dp[i] : dp[i / 3] + 1;
+        }
+    }
+
+    return dp[y];
+}
+
+int main() {
+    int x, y;
+
+    printf("Введіть значення x (0 <= x < %d): ", INT_MAX);
+    scanf("%d", &x);
+    printf("Введіть значення y (%d <= y < %d): ", x, INT_MAX);
+    scanf("%d", &y);
+
+    int result = min_steps(x, y);
+    printf("Мінімальна кількість кроків для (%d, %d): %d\n", x, y, result);
+
+    return 0;
+}
